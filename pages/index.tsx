@@ -24,7 +24,6 @@ const InputMessageField = styled('div')(({ theme }) => ({
       backgroundColor: alpha(theme.palette.common.black, 0.05),
     },
     marginTop: 4,
-    // marginRight: theme.spacing(2),
     marginLeft: theme.spacing(2),
     width: '100%'
     
