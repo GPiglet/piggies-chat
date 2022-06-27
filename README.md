@@ -1,5 +1,5 @@
 # Piggies Chat
-Nextjs + MUI + Web Socket + MongoDB
+Nextjs + MUI + Socket IO + MongoDB
 <br/>
 
 <b>Install.</b>
