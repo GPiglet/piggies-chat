@@ -1,4 +1,4 @@
-# hell-chat
+# hello-chat
 Nextjs + MUI + Web Socket + MongoDB
 <br/>
 
