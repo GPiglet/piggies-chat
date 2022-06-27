@@ -1,4 +1,4 @@
-# hello-chat
+# Piggies Chat
 Nextjs + MUI + Web Socket + MongoDB
 <br/>
 
