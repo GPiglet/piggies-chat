@@ -89,7 +89,6 @@ const FriendList = (props: any) => {
     };
 
     const selectFriendContext = React.useContext(SelectFriendContext);
-
     const onClickFriend = (friend: any) => () => {
         selectFriendContext.selectFriend(friend);
     }

@@ -74,7 +74,7 @@ const Header = (props: any) => {
         <ListItem
             // button
             // onClick={this.onClick.bind(this, friend)}
-            secondaryAction={selectFriendContext.user &&
+            secondaryAction={
                 <IconButton edge="end" aria-label="setting">
                     <MoreHorizIcon />
                 </IconButton>
