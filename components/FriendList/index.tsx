@@ -142,7 +142,7 @@ const FriendList = (props: any) => {
                 key={index}
                 button
                 onClick={onClickFriend(friend)}
-                sx = {friend.id == selectFriendContext.user.id ? {
+                sx = {selectFriendContext.user && friend.id == selectFriendContext.user.id ? {
                     bgcolor: 'rgba(0,0,0,0.08)'
                 } : {}}
             >                

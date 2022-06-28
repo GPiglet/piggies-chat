@@ -41,7 +41,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const Home: NextPage = () => {
-    const [selectedFriend, setSelectedFriend] = React.useState({});
+    const [selectedFriend, setSelectedFriend] = React.useState(null);
+    const selectFriendContext = React.useContext(SelectFriendContext);
     const selectFriend = (user: any) => {
         setSelectedFriend(user);
     };
@@ -76,6 +77,8 @@ const Home: NextPage = () => {
                         boxShadow: 'rgb(0 0 0 / 20%) 0px -5px 8px 0px',
                     }}
                 >
+                    
+                    {selectFriendContext.user && <>
                     <FriendHeader />
                     <Divider />
                     <ChatHistory />
@@ -95,6 +98,7 @@ const Home: NextPage = () => {
                             <SendIcon fontSize="large" />
                         </IconButton>
                     </Stack>
+                    </>}
                     
                 </Box>
             </Box>
