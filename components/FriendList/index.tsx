@@ -17,6 +17,7 @@ import Typography from '@mui/material/Typography';
 import Scrollbars from 'react-custom-scrollbars-2';
 import Box from '@mui/material/Box';
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
+import { SelectFriendContext } from '../../contexts/FriendContext';
 
 function stringToColor(string: string) {
     let hash = 0;
@@ -87,36 +88,48 @@ const FriendList = (props: any) => {
         setAnchorEl(null);
     };
 
+    const selectFriendContext = React.useContext(SelectFriendContext);
+
+    const onClickFriend = (friend: any) => () => {
+        selectFriendContext.selectFriend(friend);
+    }
+
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
 
     const friends = [
         {
+            id: '1',
             username: 'Smart Dev',
             message: 'Hi',
             writeDate: '6/11/2022'
         },
         {
+            id: '2',
             username: 'Black Jack',
             message: 'How are you',
             writeDate: '6/11/2022'
         },
         {
+            id: '3',
             username: 'Harry Poto',
             message: 'AASDODKFWP',
             writeDate: '6/11/2022'
         },
         {
+            id: '4',
             username: 'Steve L',
             message: 'Are you there?',
             writeDate: '6/11/2022'
         },
         {
+            id: '5',
             username: 'Wolf Han',
             message: 'Hello',
             writeDate: '6/11/2022'
         },
         {
+            id: '6',
             username: 'Worker Fa',
             message: 'Hi',
             writeDate: '6/11/2022'
@@ -128,8 +141,8 @@ const FriendList = (props: any) => {
             <ListItem
                 key={index}
                 button
-                // onClick={this.onClick.bind(this, friend)}
-                sx = {index == 0 ? {
+                onClick={onClickFriend(friend)}
+                sx = {friend.id == selectFriendContext.user.id ? {
                     bgcolor: 'rgba(0,0,0,0.08)'
                 } : {}}
             >                

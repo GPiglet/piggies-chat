@@ -114,17 +114,17 @@ const Chat = (props: any) => {
 } 
 
 const ChatHistory = (props: any) => {
-    let myId = '1';
+    let myId = '7';
     const chats = [
-        {sender: '1', receiver: '2', message: 'Hi', createDate: new Date('6/22/2022 15:20:50')},
-        {sender: '1', receiver: '2', message: 'by the way, would like to transfer as much as possible. so let me know how much can you transfer?', createDate: new Date('6/22/2022 15:21:50')},
-        {sender: '1', receiver: '2', message: 'Hi', createDate: new Date('6/22/2022 15:30:50')},
-        {sender: '1', receiver: '2', message: 'u there?', createDate: new Date('6/22/2022 15:30:50')},
-        {sender: '2', receiver: '1', message: 'Hi', createDate: new Date('6/22/2022 15:30:50')},
-        {sender: '2', receiver: '1', message: 'How are you', createDate: new Date('6/22/2022 15:30:50')},
-        {sender: '2', receiver: '1', message: 'I mean that prevent to login from more than two computer at once', createDate: new Date('6/22/2022 15:30:50')},
-        {sender: '1', receiver: '2', message: 'Hi', createDate: new Date('6/22/2022 15:31:50')},
-        {sender: '2', receiver: '1', message: 'Hi', createDate: new Date('6/22/2022 15:31:50')},
+        {sender: '7', receiver: '2', message: 'Hi', createDate: new Date('6/22/2022 15:20:50')},
+        {sender: '7', receiver: '2', message: 'by the way, would like to transfer as much as possible. so let me know how much can you transfer?', createDate: new Date('6/22/2022 15:21:50')},
+        {sender: '7', receiver: '2', message: 'Hi', createDate: new Date('6/22/2022 15:30:50')},
+        {sender: '7', receiver: '2', message: 'u there?', createDate: new Date('6/22/2022 15:30:50')},
+        {sender: '2', receiver: '7', message: 'Hi', createDate: new Date('6/22/2022 15:30:50')},
+        {sender: '2', receiver: '7', message: 'How are you', createDate: new Date('6/22/2022 15:30:50')},
+        {sender: '2', receiver: '7', message: 'I mean that prevent to login from more than two computer at once', createDate: new Date('6/22/2022 15:30:50')},
+        {sender: '7', receiver: '2', message: 'Hi', createDate: new Date('6/22/2022 15:31:50')},
+        {sender: '2', receiver: '7', message: 'Hi', createDate: new Date('6/22/2022 15:31:50')},
     ];
 
     let prevSender = chats[0].sender, prevDate = chats[0].createDate, chatDummy: Array<any> = [], chatList = [], index = 0;
