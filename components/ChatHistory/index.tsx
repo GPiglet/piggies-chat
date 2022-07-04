@@ -8,6 +8,7 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Scrollbars from 'react-custom-scrollbars-2';
 import Box from '@mui/material/Box';
+import { MessageContext } from '../../contexts/MessageContext';
 
 const stringToColor = (string: string) => {
     let hash = 0;
@@ -100,12 +101,12 @@ const Chat = (props: any) => {
         >       
             {align=='left' &&          
             <ListItemAvatar>
-                <Avatar {...stringAvatar('Smart Dev')} />
+                <Avatar {...stringAvatar(dummy[0].senderName)} />
             </ListItemAvatar>}
             <ListItemText
                 disableTypography = {true}
                 primary={<Typography sx={{fontSize: '0.8rem', color: 'rgba(0,0,0,0.6)'}}>
-                    {(align=='left' ? 'Smart Dev, ' : '') + formatTime(dummy[0].createDate)}
+                    {(align=='left' ? dummy[0].senderName + ', ' : '') + formatTime(dummy[0].createDate)}
                 </Typography>}
                 secondary={<List>{secondarys}</List>}
             />
@@ -115,35 +116,29 @@ const Chat = (props: any) => {
 
 const ChatHistory = (props: any) => {
     let myId = '7';
-    const chats = [
-        {sender: '7', receiver: '2', message: 'Hi', createDate: new Date('6/22/2022 15:20:50')},
-        {sender: '7', receiver: '2', message: 'by the way, would like to transfer as much as possible. so let me know how much can you transfer?', createDate: new Date('6/22/2022 15:21:50')},
-        {sender: '7', receiver: '2', message: 'Hi', createDate: new Date('6/22/2022 15:30:50')},
-        {sender: '7', receiver: '2', message: 'u there?', createDate: new Date('6/22/2022 15:30:50')},
-        {sender: '2', receiver: '7', message: 'Hi', createDate: new Date('6/22/2022 15:30:50')},
-        {sender: '2', receiver: '7', message: 'How are you', createDate: new Date('6/22/2022 15:30:50')},
-        {sender: '2', receiver: '7', message: 'I mean that prevent to login from more than two computer at once', createDate: new Date('6/22/2022 15:30:50')},
-        {sender: '7', receiver: '2', message: 'Hi', createDate: new Date('6/22/2022 15:31:50')},
-        {sender: '2', receiver: '7', message: 'Hi', createDate: new Date('6/22/2022 15:31:50')},
-    ];
-
-    let prevSender = chats[0].sender, prevDate = chats[0].createDate, chatDummy: Array<any> = [], chatList = [], index = 0;
-    for( let i = 0; i < chats.length; i++ )
+    const messageContext = React.useContext(MessageContext);
+    const messages = messageContext.list;
+    var chatList = [];
+    if ( messages.length > 0 )
     {
-        let chat = chats[i];
-        if ( prevSender != chat.sender || chat.createDate.getTime() - prevDate.getTime() >= 60*1000 )
+        let prevSender = messages[0].sender, prevDate = messages[0].createDate, chatDummy: Array<any> = [], index = 0;
+        for( let i = 0; i < messages.length; i++ )
+        {
+            let message = messages[i];
+            if ( prevSender != message.sender || message.createDate.getTime() - prevDate.getTime() >= 60*1000 )
+            {
+                chatList.push(<Chat key={index++} dummy={chatDummy} align={prevSender == myId ? 'right' : 'left'} />);
+                chatDummy = [];
+            }
+    
+            chatDummy.push(message);
+            prevSender = message.sender;
+            prevDate = message.createDate;
+        }
+        if ( chatDummy.length > 0 )
         {
             chatList.push(<Chat key={index++} dummy={chatDummy} align={prevSender == myId ? 'right' : 'left'} />);
-            chatDummy = [];
         }
-
-        chatDummy.push(chat);
-        prevSender = chat.sender;
-        prevDate = chat.createDate;
-    }
-    if ( chatDummy.length > 0 )
-    {
-        chatList.push(<Chat key={index++} dummy={chatDummy} align={prevSender == myId ? 'right' : 'left'} />);
     }
 
     return (

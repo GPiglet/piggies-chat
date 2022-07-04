@@ -18,6 +18,7 @@ import Scrollbars from 'react-custom-scrollbars-2';
 import Box from '@mui/material/Box';
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import { SelectFriendContext } from '../../contexts/FriendContext';
+import { MessageContext } from '../../contexts/MessageContext';
 
 function stringToColor(string: string) {
     let hash = 0;
@@ -89,9 +90,12 @@ const FriendList = (props: any) => {
     };
 
     const selectFriendContext = React.useContext(SelectFriendContext);
+    const messageContext = React.useContext(MessageContext);
     const onClickFriend = (friend: any) => () => {
         selectFriendContext.selectFriend(friend);
+        messageContext.push(friend.messages, true);
     }
+
 
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
@@ -101,37 +105,55 @@ const FriendList = (props: any) => {
             id: '1',
             username: 'Smart Dev',
             message: 'Hi',
-            writeDate: '6/11/2022'
+            writeDate: '6/11/2022',
+            messages: [{sender: '7', receiver: '1', senderName: 'Piglet', receiverName: 'Smart Dev', message: 'Hi', createDate: new Date('6/22/2022 15:20:50')},
+            {sender: '7', receiver: '1', senderName: 'Piglet', receiverName: 'Smart Dev', message: 'by the way, would like to transfer as much as possible. so let me know how much can you transfer?', createDate: new Date('6/22/2022 15:21:50')},
+            {sender: '7', receiver: '1', senderName: 'Piglet', receiverName: 'Smart Dev', message: 'Hi', createDate: new Date('6/22/2022 15:30:50')},
+            {sender: '7', receiver: '1', senderName: 'Piglet', receiverName: 'Smart Dev', message: 'u there?', createDate: new Date('6/22/2022 15:30:50')},
+            {sender: '1', receiver: '7', senderName: 'Smart Dev', receiverName: 'Piglet', message: 'Hi', createDate: new Date('6/22/2022 15:30:50')},
+            {sender: '1', receiver: '7', senderName: 'Smart Dev', receiverName: 'Piglet', message: 'How are you', createDate: new Date('6/22/2022 15:30:50')},
+            {sender: '1', receiver: '7', senderName: 'Smart Dev', receiverName: 'Piglet', message: 'I mean that prevent to login from more than two computer at once', createDate: new Date('6/22/2022 15:30:50')},
+            {sender: '7', receiver: '1', senderName: 'Piglet', receiverName: 'Smart Dev', message: 'Hi', createDate: new Date('6/22/2022 15:31:50')},
+            {sender: '1', receiver: '7', senderName: 'Smart Dev', receiverName: 'Piglet', message: 'Hi', createDate: new Date('6/22/2022 15:31:50')},]
         },
         {
             id: '2',
             username: 'Black Jack',
             message: 'How are you',
-            writeDate: '6/11/2022'
+            writeDate: '6/11/2022',
+            messages: [{sender: '7', receiver: '2', senderName: 'Piglet', receiverName: 'Black Jack', message: 'Hi', createDate: new Date('6/22/2022 15:20:50')},
+            {sender: '2', receiver: '7', senderName: 'Black Jack', receiverName: 'Piglet', message: 'How are you', createDate: new Date('6/22/2022 15:31:50')},]
         },
         {
             id: '3',
             username: 'Harry Poto',
             message: 'AASDODKFWP',
-            writeDate: '6/11/2022'
+            writeDate: '6/11/2022',
+            messages: [{sender: '7', senderName: 'Piglet', receiverName: 'Harry Poto', receiver: '3', message: 'AASDODKFWP', createDate: new Date('6/22/2022 15:20:50')},]
         },
         {
             id: '4',
             username: 'Steve L',
             message: 'Are you there?',
-            writeDate: '6/11/2022'
+            writeDate: '6/11/2022',
+            messages: [{sender: '7', senderName: 'Piglet', receiverName: 'Steve L', receiver: '1', message: 'Hi', createDate: new Date('6/22/2022 15:20:50')},
+            {sender: '4', receiver: '7', senderName: 'Steve L', receiverName: 'Piglet', message: 'Are you there?', createDate: new Date('6/22/2022 15:31:50')},]
         },
         {
             id: '5',
             username: 'Wolf Han',
             message: 'Hello',
-            writeDate: '6/11/2022'
+            writeDate: '6/11/2022',
+            messages: [{sender: '7', senderName: 'Piglet', receiverName: 'Wolf Han', receiver: '1', message: 'Hi', createDate: new Date('6/22/2022 15:20:50')},
+            {sender: '5', receiver: '7', senderName: 'Wolf Han', receiverName: 'Piglet', message: 'Hello', createDate: new Date('6/22/2022 15:31:50')},]
         },
         {
             id: '6',
             username: 'Worker Fa',
             message: 'Hi',
-            writeDate: '6/11/2022'
+            writeDate: '6/11/2022',
+            messages: [{sender: '7', senderName: 'Piglet', receiverName: 'Worker Fa', receiver: '1', message: 'Hi', createDate: new Date('6/22/2022 15:20:50')},
+            {sender: '6', receiver: '7', senderName: 'Worker Fa', receiverName: 'Piglet', message: 'Hi', createDate: new Date('6/22/2022 15:31:50')},]
         }
     ];
 
