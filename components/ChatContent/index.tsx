@@ -34,20 +34,19 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-const ChatContent = (props: any) => {
+const ChatContent = React.forwardRef((props: any, ref) => {
     const selectFriendContext = React.useContext(SelectFriendContext);
 
     return (
-        <Box
+        <Box ref={ref}
             sx = {{
                 width: '100%',
-                display: { xs: 'none', sm: 'block'},
                 boxShadow: 'rgb(0 0 0 / 20%) 0px -5px 8px 0px',
             }}
         >
             
             {selectFriendContext.user && <>
-            <FriendHeader />
+            <FriendHeader refLeftSide={props.refLeftSide} refChatContent={ref} />
             <Divider />
             <ChatHistory />
             
@@ -84,6 +83,6 @@ const ChatContent = (props: any) => {
             
         </Box>
     );
-}
+})
 
 export default ChatContent;

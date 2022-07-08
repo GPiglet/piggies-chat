@@ -7,6 +7,7 @@ import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { SelectFriendContext } from '../../contexts/FriendContext';
 import * as React from 'react';
 
@@ -70,6 +71,15 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 
 const Header = (props: any) => {
     const selectFriendContext = React.useContext(SelectFriendContext);
+
+    const gotoFriendList = () => {
+        const refLeftSide = props.refLeftSide;
+        const refChatContent = props.refChatContent;
+        refLeftSide.current.style.display = 'block';
+        if ( window.innerWidth < 600 )
+            refChatContent.current.style.display = 'none';
+    };
+    
     return (
         <ListItem
             // button
@@ -80,6 +90,9 @@ const Header = (props: any) => {
                 </IconButton>
                 }
         >
+            <IconButton sx={{display: {sm: 'none'}, mr: 2}} aria-label="Go to friend list" onClick={gotoFriendList}>
+                <ArrowBackIcon />
+            </IconButton>
             <ListItemAvatar>
                 <StyledBadge
                     overlap="circular"

@@ -145,7 +145,6 @@ const ChatHistory = (props: any) => {
         <Box
             sx = {{
                 height: 'calc(100vh - 150px)',
-                overflow: 'auto'
             }}
         >
         <Scrollbars universal={true}>

@@ -94,6 +94,14 @@ const FriendList = (props: any) => {
     const onClickFriend = (friend: any) => () => {
         selectFriendContext.selectFriend(friend);
         messageContext.push(friend.messages, true);
+
+        const refLeftSide = props.refLeftSide;
+        const refChatContent = props.refChatContent;
+        if ( window.innerWidth < 600 ) 
+        {
+            refLeftSide.current.style.display = 'none';
+            refChatContent.current.style.display = 'block';
+        }
     }
 
 
@@ -243,7 +251,6 @@ const FriendList = (props: any) => {
             <Box
                 sx = {{
                     height: 'calc(100vh - 188px)',
-                    overflow: 'auto'
                 }}
             >
             <Scrollbars universal={true}>

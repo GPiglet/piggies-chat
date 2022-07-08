@@ -20,6 +20,8 @@ const Home: NextPage = () => {
     };
 
     const [messages, setMessages] = React.useState<Array<MessageType>>([]);
+    const refChatContent = React.useRef<any>(null);
+    const refLeftSide = React.useRef<any>(null);
 
     const pushMessage = (msg: Array<MessageType>, isReset: boolean) => {
         if ( isReset )
@@ -27,6 +29,26 @@ const Home: NextPage = () => {
         else
             setMessages([...messages, ...msg]);
     };
+
+    const onResize = () => {
+        if ( window.innerWidth < 600 )
+        {
+            //xs
+            refLeftSide.current.style.display = 'block';
+            refChatContent.current.style.display = 'none';
+        }
+        else
+        {
+            // sm+
+            refLeftSide.current.style.display = 'block';
+            refChatContent.current.style.display = 'block';
+        }
+    }
+
+    React.useEffect(() => {
+        window.addEventListener('resize', onResize);
+        return ()=>window.removeEventListener('resize', onResize);
+    }, []);
 
     return (    
         <SelectFriendContext.Provider value={{user: selectedFriend, selectFriend}} >
@@ -37,21 +59,21 @@ const Home: NextPage = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <CssBaseline />
-            <Box
+            <Box 
                 sx = {{
                     display: 'flex'
                 }}
             >
-                <Box
+                <Box ref={refLeftSide}
                     sx = {{
                         width: {xs: '100%', sm: 420},
                     }}
                 >
                     <Header />
                     <SearchBar />
-                    <FriendList />
+                    <FriendList refLeftSide={refLeftSide} refChatContent={refChatContent} />
                 </Box>
-                <ChatContent/>
+                <ChatContent ref={refChatContent} refLeftSide={refLeftSide}/>
             </Box>
             <Footer />
         </MessageContext.Provider>
