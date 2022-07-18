@@ -1,13 +1,27 @@
 const path = require('path');
 // load dependencies
-const env = require('dotenv');
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 var cors = require('cors');
+const mongoose = require("mongoose");
+
+// connect mongodb
+
+const { MONGO_URI } = process.env;
+mongoose.connect(MONGO_URI)
+.then(() => {
+    console.log("Successfully connected to database");
+})
+.catch((error) => {
+    console.log("database connection failed. exiting now...");
+    console.error(error);
+    process.exit(1);
+});
+
 
 const app = express();
 
-env.config();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(bodyParser.raw());
