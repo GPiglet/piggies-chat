@@ -2,6 +2,7 @@ const path = require('path');
 // load dependencies
 require('dotenv').config();
 const express = require('express');
+const passport = require('passport');
 const bodyParser = require('body-parser');
 var cors = require('cors');
 const mongoose = require("mongoose");
@@ -19,6 +20,7 @@ mongoose.connect(MONGO_URI)
     process.exit(1);
 });
 
+require('./middlewares/passport');
 
 const app = express();
 
@@ -29,7 +31,9 @@ app.use(cors({origin: 'http://localhost:3000'}));
 
 //Loading Routes
 const apiRoutes = require('./routes/api');
+const apiSecureRoutes = require('./routes/secure-api');
 app.use('/api/v1', apiRoutes);
+app.use('/api/v1', passport.authenticate('jwt', { session: false }), apiSecureRoutes);
 
 app.listen(process.env.PORT);
 //pending set timezone
