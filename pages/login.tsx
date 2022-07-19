@@ -16,13 +16,15 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Copyright from '../components/Footer/Copyright';
-
+import PiggiesSnackbar from '../components/Notifications/snackbar';
 
 const theme = createTheme();
 
 const SignIn: NextPage = () => {
   const router = useRouter();
   const authContext = React.useContext(AuthContext);
+  const [openErrorSnackbar, setOpenErorSnackbar] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState('');
 
   const {email, password} = router.query;
 
@@ -33,10 +35,24 @@ const SignIn: NextPage = () => {
     const password: string = data.get('password')?.toString() || '';
     const isRemember: boolean = data.get('isRemember') != null;
 
+    if ( !email || !password ) {
+      setErrorMessage('All input is required.');
+      setOpenErorSnackbar(true);
+      return;
+    }
+
     authContext.login(email, password, isRemember, null, (err: any) => {
-      console.log(err)
+      if ( err.response ) {
+        setOpenErorSnackbar(true);
+        setErrorMessage(err.response.data);
+      }
     });
+
   };
+  
+  const onCloseSnackbar = () => {
+    setOpenErorSnackbar(false);
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -98,6 +114,7 @@ const SignIn: NextPage = () => {
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
+      <PiggiesSnackbar open={openErrorSnackbar} onClose={onCloseSnackbar} message={errorMessage}/>
     </ThemeProvider>
   );
 }

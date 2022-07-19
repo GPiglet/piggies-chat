@@ -15,12 +15,15 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Copyright from '../components/Footer/Copyright';
+import PiggiesSnackbar from '../components/Notifications/snackbar';
 
 const theme = createTheme();
 
 const SignUpPage: NextPage = () => {
   const router = useRouter();
   const authContext = React.useContext(AuthContext);
+  const [openErrorSnackbar, setOpenErorSnackbar] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState('');
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -32,8 +35,18 @@ const SignUpPage: NextPage = () => {
       password: data.get('password')?.toString()||'',
     }
 
+    if ( !user.firstname || !user.lastname || !user.email || !user.password )
+    {
+      setErrorMessage('All input is required.');
+      setOpenErorSnackbar(true);
+      return;
+    }
+
     const onError = (err: any) => {
-      console.log(err)
+      if ( err.response ) {
+        setOpenErorSnackbar(true);
+        setErrorMessage(err.response.data);
+      }
     }
 
     authContext.signup(user, 
@@ -43,6 +56,10 @@ const SignUpPage: NextPage = () => {
       onError
     )
   };
+
+  const onCloseSnackbar = () => {
+    setOpenErorSnackbar(false);
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -104,7 +121,7 @@ const SignUpPage: NextPage = () => {
                   type="password"
                   id="password"
                   autoComplete="new-password"
-                />
+                /> 
               </Grid>
             </Grid>
             <Button
@@ -122,6 +139,7 @@ const SignUpPage: NextPage = () => {
         </Box>
         <Copyright sx={{ mt: 5 }} />
       </Container>
+      <PiggiesSnackbar open={openErrorSnackbar} onClose={onCloseSnackbar} message={errorMessage}/>
     </ThemeProvider>
   );
 }
