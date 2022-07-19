@@ -1,10 +1,12 @@
 import * as React from 'react';
+import { NextPage } from 'next';
+import { useRouter } from 'next/router'
+import {AuthContext, UserType} from '../contexts/AuthContext';
+
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -16,14 +18,30 @@ import Copyright from '../components/Footer/Copyright';
 
 const theme = createTheme();
 
-export default function SignUp() {
+const SignUpPage: NextPage = () => {
+  const router = useRouter();
+  const authContext = React.useContext(AuthContext);
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const user:UserType = {
+      firstname: data.get('firstname')?.toString()||'',
+      lastname: data.get('lastname')?.toString()||'',
+      email: data.get('email')?.toString()||'',
+      password: data.get('password')?.toString()||'',
+    }
+
+    const onError = (err: any) => {
+      console.log(err)
+    }
+
+    authContext.signup(user, 
+      (user: any) => {
+        router.push({pathname: '/login', query: user})
+      },
+      onError
+    )
   };
 
   return (
@@ -49,10 +67,10 @@ export default function SignUp() {
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"
-                  name="firstName"
+                  name="firstname"
                   required
                   fullWidth
-                  id="firstName"
+                  id="firstname"
                   label="First Name"
                   autoFocus
                 />
@@ -61,9 +79,9 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="lastName"
+                  id="lastname"
                   label="Last Name"
-                  name="lastName"
+                  name="lastname"
                   autoComplete="family-name"
                 />
               </Grid>
@@ -88,12 +106,6 @@ export default function SignUp() {
                   autoComplete="new-password"
                 />
               </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid>
             </Grid>
             <Button
               type="submit"
@@ -113,3 +125,5 @@ export default function SignUp() {
     </ThemeProvider>
   );
 }
+
+export default SignUpPage;

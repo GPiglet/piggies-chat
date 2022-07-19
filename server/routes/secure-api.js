@@ -1,17 +1,8 @@
 const express = require('express');
-const passport = require('passport');
+const UserController = require('../controllers/UserController');
 
 const router = express.Router();
 
-router.get(
-  '/profile',
-  (req, res, next) => {
-    res.json({
-      message: 'You made it to the secure route',
-      user: req.user,
-      token: req.query.secret_token
-    })
-  }
-);
+router.get('/profile', UserController.profile);
 
 module.exports = router;

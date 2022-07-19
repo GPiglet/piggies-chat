@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { NextPage } from 'next';
+import { useRouter } from 'next/router'
+import {AuthContext} from '../contexts/AuthContext';
 
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -8,7 +10,6 @@ import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
@@ -16,15 +17,24 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Copyright from '../components/Footer/Copyright';
 
+
 const theme = createTheme();
 
 const SignIn: NextPage = () => {
+  const router = useRouter();
+  const authContext = React.useContext(AuthContext);
+
+  const {email, password} = router.query;
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+    const email: string = data.get('email')?.toString() || '';
+    const password: string = data.get('password')?.toString() || '';
+    const isRemember: boolean = data.get('isRemember') != null;
+
+    authContext.login(email, password, isRemember, null, (err: any) => {
+      console.log(err)
     });
   };
 
@@ -55,6 +65,7 @@ const SignIn: NextPage = () => {
               label="Email Address"
               name="email"
               autoComplete="email"
+              defaultValue={email}
               autoFocus
             />
             <TextField
@@ -66,9 +77,10 @@ const SignIn: NextPage = () => {
               type="password"
               id="password"
               autoComplete="current-password"
+              defaultValue={password}
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
+              control={<Checkbox value="remember" name="isRemember" color="primary" defaultChecked={true} />}
               label="Remember me"
             />
             <Button

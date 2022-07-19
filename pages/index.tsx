@@ -1,19 +1,66 @@
 import * as React from 'react';
 import { NextPage } from 'next';
+import { useRouter } from 'next/router';
+import { SelectFriendContext } from '../contexts/FriendContext';
+import { MessageContext, MessageType } from '../contexts/MessageContext';
+import {AuthContext} from '../contexts/AuthContext';
+import AuthApi from '../services/Auth';
+
 import Head from 'next/head';
 import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
+import Typography from '@mui/material/Typography';
 import CssBaseline from '@mui/material/CssBaseline';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import SearchBar from '../components/SearchBar';
 import FriendList from '../components/FriendList';
 import ChatContent from '../components/ChatContent';
-import { SelectFriendContext } from '../contexts/FriendContext';
-import { MessageContext, MessageType } from '../contexts/MessageContext';
 
+const LoadingView = () => {
+    const [progress, setProgress] = React.useState(0);
+    const [opacity, setOpacity] = React.useState(1);
 
+    React.useEffect(() => {
+        let counter = 0;
+        const timer = setInterval(() => {
+          setProgress((prevProgress) => (prevProgress + 1));
+          counter += 0.01;
+          setOpacity((prevOpacity) => {
+            return prevOpacity + (Math.floor(counter)%2 / 50 - 0.01);
+          })
+        }, 50);
+    
+        return () => {
+          clearInterval(timer);
+        };
+    }, []);
 
-const Home: NextPage = () => {
+    return (
+        <Box
+            sx={{
+                position: 'relative',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '100vh'
+            }}
+        >
+            <CircularProgress size={100} thickness={1.5} sx={{color: '#ccc'}} variant="determinate" value={progress}/>
+            <Typography
+                sx={{
+                    position: 'absolute',
+                    color: '#333',
+                    opacity
+                }}
+            >
+                Loading...
+            </Typography>
+        </Box>
+    )
+}
+
+const MainView = () => {
     const [selectedFriend, setSelectedFriend] = React.useState(null);
     const selectFriend = (user: any) => {
         setSelectedFriend(user);
@@ -50,7 +97,7 @@ const Home: NextPage = () => {
         return ()=>window.removeEventListener('resize', onResize);
     }, []);
 
-    return (    
+    return (
         <SelectFriendContext.Provider value={{user: selectedFriend, selectFriend}} >
         <MessageContext.Provider value={{list: messages, push: pushMessage}} >
             <Head>
@@ -78,6 +125,44 @@ const Home: NextPage = () => {
             <Footer />
         </MessageContext.Provider>
         </SelectFriendContext.Provider>
+    );
+}
+
+const Home: NextPage = () => {
+    const router = useRouter();
+    const authContext = React.useContext(AuthContext);
+    const [showMain, setShowMain] = React.useState<boolean>(false);
+
+    React.useEffect(() => {
+        if ( authContext.user ) {
+            setShowMain(true);
+        }
+        else {
+            const token = localStorage.getItem('app_token');
+            if ( token ) {
+                AuthApi.setToken(token);
+                AuthApi.profile(
+                    (user: any) => {
+                        authContext.setUser(user);
+                        setShowMain(true);
+                    },
+                    (err: any) => {
+                        console.log(err)
+                        router.push('/login');
+                    }
+                )
+            }
+            else {
+                router.push('/login');
+            }
+        }
+        
+    }, []);
+
+    return (
+        <>
+        {(showMain == true) ? <MainView /> : <LoadingView />}
+        </>
     )
 }
 
