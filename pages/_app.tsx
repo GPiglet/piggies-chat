@@ -23,10 +23,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   }
 
   const logout = () => {
-    setUser(null);
-    localStorage.setItem('app_token', '');
-    sessionStorage.setItem('app_token', '');
-    router.push('/login');
+    router.replace('/login');
+    setTimeout(() => {
+      setUser(null);
+      localStorage.setItem('app_token', '');
+      sessionStorage.setItem('app_token', '');
+    }, 100);
   }
 
   return (
