@@ -19,6 +19,7 @@ import Box from '@mui/material/Box';
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import { SelectFriendContext } from '../../contexts/FriendContext';
 import { MessageContext } from '../../contexts/MessageContext';
+import PiggiesPopper from '../Widgets/PPopper';
 
 function stringToColor(string: string) {
     let hash = 0;
@@ -79,16 +80,14 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 
 const FriendList = (props: any) => {
-    const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
-
+    const [open, setOpen] = React.useState<boolean>(false);
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget);
+        setOpen((prev)=>!prev);
     };
-
     const handleClose = () => {
-        setAnchorEl(null);
-    };
-
+        setOpen(false);
+    }
+    
     const selectFriendContext = React.useContext(SelectFriendContext);
     const messageContext = React.useContext(MessageContext);
     const onClickFriend = (friend: any) => () => {
@@ -104,9 +103,6 @@ const FriendList = (props: any) => {
         }
     }
 
-
-    const open = Boolean(anchorEl);
-    const id = open ? 'simple-popover' : undefined;
 
     const friends = [
         {
@@ -200,17 +196,15 @@ const FriendList = (props: any) => {
     });
     return (
         <>
-            <Button aria-describedby={id} onClick={handleClick} size="small" endIcon={<ExpandMoreIcon />} sx={{marginTop: 4, textTransform: 'none'}}>Recent chats</Button>        
-            <Popover
-                id={id}
+            <PiggiesPopper
                 open={open}
-                anchorEl={anchorEl}
+                placement='bottom-start'
                 onClose={handleClose}
-                anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-                }}
+                anchorEl={
+                    <Button onClick={handleClick} size="small" endIcon={<ExpandMoreIcon />} sx={{marginTop: 4, textTransform: 'none'}}>Recent chats</Button>        
+                }
             >
+
                 <List
                     sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
                     component="nav"
@@ -246,8 +240,7 @@ const FriendList = (props: any) => {
                         <CheckIcon fontSize="small" color="primary" sx={{display: 'none'}}/>
                     </ListItemButton>
                 </List>
-
-            </Popover>
+            </PiggiesPopper>
             <Box
                 sx = {{
                     height: 'calc(100vh - 188px)',

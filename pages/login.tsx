@@ -16,7 +16,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Copyright from '../components/Footer/Copyright';
-import PiggiesSnackbar from '../components/Notifications/snackbar';
+import PiggiesSnackbar from '../components/Widgets/PSnackbar';
 
 const theme = createTheme();
 

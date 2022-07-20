@@ -8,7 +8,7 @@ import AuthApi from '../services/Auth';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
-  const [user, setUser] = React.useState<UserType>();
+  const [user, setUser] = React.useState<UserType|null>(null);
 
   const signup = (user: UserType, subscriber: any, onError: any) => {
     AuthApi.signup(user, subscriber, onError);
@@ -22,8 +22,15 @@ function MyApp({ Component, pageProps }: AppProps) {
     }, onError);
   }
 
+  const logout = () => {
+    setUser(null);
+    localStorage.setItem('app_token', '');
+    sessionStorage.setItem('app_token', '');
+    router.push('/login');
+  }
+
   return (
-    <AuthContext.Provider value={{user, signup, login, setUser}}>
+    <AuthContext.Provider value={{user, signup, login, logout, setUser}}>
       <Component {...pageProps} />
     </AuthContext.Provider>
   ) 

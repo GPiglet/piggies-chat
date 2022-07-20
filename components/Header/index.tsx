@@ -1,4 +1,7 @@
 
+import * as React from 'react';
+import {AuthContext} from '../../contexts/AuthContext';
+
 import { styled } from '@mui/material/styles';
 import Badge from '@mui/material/Badge';
 import ListItem from '@mui/material/ListItem';
@@ -7,6 +10,15 @@ import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import Popover from '@mui/material/Popover';
+import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import Divider from '@mui/material/Divider';
+import Popper from '@mui/material/Popper';
+import Paper from '@mui/material/Paper';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Box from '@mui/material/Box';
+import PiggiesPopper from '../Widgets/PPopper';
 
 function stringToColor(string: string) {
     let hash = 0;
@@ -67,34 +79,77 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 
 const Header = (props: any) => {
+    const authContext = React.useContext(AuthContext);
+    const user = authContext.user;
+
+    const [open, setOpen] = React.useState<boolean>(false);
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+      setOpen((prev)=>!prev);
+    };
+
+    const handleClose = () => {
+      setOpen(false);
+    }
+
+    const onLogout = () => {
+      authContext.logout();
+    }
+
     return (
-        <ListItem
-            // button
-            // onClick={this.onClick.bind(this, friend)}
+        <>
+          <ListItem
             secondaryAction={
-                <IconButton edge="end" aria-label="setting">
-                    <MoreHorizIcon />
-                </IconButton>
+              <PiggiesPopper
+                open={open}
+                placement='bottom'
+                onClose={handleClose}
+                anchorEl={
+                  <IconButton edge="end" aria-label="setting" onClick={handleClick}>
+                      <MoreHorizIcon />
+                  </IconButton>
                 }
-        >
+              >
+                  <List
+                    sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+                    component="nav"
+                    aria-labelledby="nested-list-subheader"
+                  >
+                    <ListItemButton sx={{pt: 0, pb: 0}}>
+                      <ListItemText primary="Setting" sx={{pr: 5}} primaryTypographyProps={{fontSize: 14}}/>
+                    </ListItemButton>
+                  </List>
+                  <Divider/>
+                  <List
+                    sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+                    component="nav"
+                    aria-labelledby="nested-list-subheader"
+                  >
+                    <ListItemButton sx={{pt: 0, pb: 0}} onClick={onLogout}>
+                      <ListItemText primary="Sign out" sx={{pr: 5}} primaryTypographyProps={{fontSize: 14}}/>
+                    </ListItemButton>
+                  </List>
+              </PiggiesPopper>
+            }
+          >
             <ListItemAvatar>
-                <StyledBadge
-                    overlap="circular"
-                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                    variant="dot"
-                >
-                    <Avatar {...stringAvatar('Piglet')} />
-                </StyledBadge>
+              <StyledBadge
+                overlap="circular"
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                variant="dot"
+              >
+                <Avatar {...stringAvatar(`${user?.firstname.toUpperCase()} ${user?.lastname.toUpperCase()}`)} />
+              </StyledBadge>
             </ListItemAvatar>
             <ListItemText
-                className={'ellipsis'}
-                // inset={true}
-                primary={'Piglet'}
-                primaryTypographyProps={{
-                    fontWeight: 'bold',
-                  }}
-                secondary={'Set a status'} />
-        </ListItem>
+              className={'ellipsis'}
+              // inset={true}
+              primary={`${user?.firstname} ${user?.lastname}`}
+              primaryTypographyProps={{
+                fontWeight: 'bold',
+                }}
+              secondary={'Set a status'} />
+          </ListItem>
+        </>
     );
 }
 

@@ -138,7 +138,7 @@ const Home: NextPage = () => {
             setShowMain(true);
         }
         else {
-            const token = localStorage.getItem('app_token');
+            const token = localStorage.getItem('app_token') || sessionStorage.getItem('app_token');
             if ( token ) {
                 AuthApi.setToken(token);
                 AuthApi.profile(

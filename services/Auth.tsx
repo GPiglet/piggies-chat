@@ -31,7 +31,10 @@ const login = (email: string, password: string, isRemember: boolean, subscriber:
         setToken(token);
 
         // store token in local storage
-        if ( isRemember ) localStorage.setItem('app_token', token);        
+        if ( isRemember ) 
+            localStorage.setItem('app_token', token);
+        else
+            sessionStorage.setItem('app_token', token);
 
         if ( subscriber ) subscriber(res.data);
     })
