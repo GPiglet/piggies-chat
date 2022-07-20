@@ -93,6 +93,7 @@ const MainView = () => {
     }
 
     React.useEffect(() => {
+        onResize();
         window.addEventListener('resize', onResize);
         return ()=>window.removeEventListener('resize', onResize);
     }, []);
