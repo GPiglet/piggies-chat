@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router'
-import {AuthContext, UserType} from '../contexts/AuthContext';
+
+import { UserType } from '../contexts/Types';
+import AuthContext from '../contexts/AuthContext';
 
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -29,6 +31,7 @@ const SignUpPage: NextPage = () => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const user:UserType = {
+      _id: '',
       firstname: data.get('firstname')?.toString()||'',
       lastname: data.get('lastname')?.toString()||'',
       email: data.get('email')?.toString()||'',

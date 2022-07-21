@@ -8,7 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { SelectFriendContext } from '../../contexts/FriendContext';
+import FriendContext from '../../contexts/FriendContext';
 import * as React from 'react';
 
 function stringToColor(string: string) {
@@ -32,6 +32,7 @@ function stringToColor(string: string) {
 }
 
 function stringAvatar(name: string) {
+    name = name.toUpperCase();
     return {
         sx: {
         bgcolor: stringToColor(name),
@@ -70,7 +71,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 
 const Header = (props: any) => {
-    const selectFriendContext = React.useContext(SelectFriendContext);
+    const friendContext = React.useContext(FriendContext);
 
     const gotoFriendList = () => {
         const refLeftSide = props.refLeftSide;
@@ -79,6 +80,8 @@ const Header = (props: any) => {
         if ( window.innerWidth < 600 )
             refChatContent.current.style.display = 'none';
     };
+
+    const selectedFriend = friendContext.selectedIndex != -1 ? friendContext.list[friendContext.selectedIndex] : null;
     
     return (
         <ListItem
@@ -99,13 +102,13 @@ const Header = (props: any) => {
                     anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                     variant="dot"
                 >
-                    <Avatar {...stringAvatar(selectFriendContext.user.username)} />
+                    <Avatar {...stringAvatar(selectedFriend?.firstname + ' ' + selectedFriend?.lastname)} />
                 </StyledBadge>
             </ListItemAvatar>
             <ListItemText
                 className={'ellipsis'}
                 // inset={true}
-                primary={selectFriendContext.user.username}
+                primary={selectedFriend?.firstname + ' ' + selectedFriend?.lastname}
                 secondary={'Last seen 17h ago'} />
         </ListItem>
     );

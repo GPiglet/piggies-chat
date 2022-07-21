@@ -3,7 +3,6 @@ import {styled} from '@mui/material/styles';
 import Badge from '@mui/material/Badge';
 import Button from '@mui/material/Button';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Popover from '@mui/material/Popover';
 import ListSubheader from '@mui/material/ListSubheader';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -17,8 +16,8 @@ import Typography from '@mui/material/Typography';
 import Scrollbars from 'react-custom-scrollbars-2';
 import Box from '@mui/material/Box';
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
-import { SelectFriendContext } from '../../contexts/FriendContext';
-import { MessageContext } from '../../contexts/MessageContext';
+import FriendContext from '../../contexts/FriendContext';
+import MessageContext from '../../contexts/MessageContext';
 import PiggiesPopper from '../Widgets/PPopper';
 
 function stringToColor(string: string) {
@@ -88,11 +87,11 @@ const FriendList = (props: any) => {
         setOpen(false);
     }
     
-    const selectFriendContext = React.useContext(SelectFriendContext);
+    const friendContext = React.useContext(FriendContext);
     const messageContext = React.useContext(MessageContext);
     const onClickFriend = (friend: any) => () => {
-        selectFriendContext.selectFriend(friend);
-        messageContext.push(friend.messages, true);
+        friendContext.selectFriend(friend);
+        // messageContext.push(friend.messages, true);
 
         const refLeftSide = props.refLeftSide;
         const refChatContent = props.refChatContent;
@@ -104,70 +103,15 @@ const FriendList = (props: any) => {
     }
 
 
-    const friends = [
-        {
-            id: '1',
-            username: 'Smart Dev',
-            message: 'Hi',
-            writeDate: '6/11/2022',
-            messages: [{sender: '7', receiver: '1', senderName: 'Piglet', receiverName: 'Smart Dev', message: 'Hi', createDate: new Date('6/22/2022 15:20:50')},
-            {sender: '7', receiver: '1', senderName: 'Piglet', receiverName: 'Smart Dev', message: 'by the way, would like to transfer as much as possible. so let me know how much can you transfer?', createDate: new Date('6/22/2022 15:21:50')},
-            {sender: '7', receiver: '1', senderName: 'Piglet', receiverName: 'Smart Dev', message: 'Hi', createDate: new Date('6/22/2022 15:30:50')},
-            {sender: '7', receiver: '1', senderName: 'Piglet', receiverName: 'Smart Dev', message: 'u there?', createDate: new Date('6/22/2022 15:30:50')},
-            {sender: '1', receiver: '7', senderName: 'Smart Dev', receiverName: 'Piglet', message: 'Hi', createDate: new Date('6/22/2022 15:30:50')},
-            {sender: '1', receiver: '7', senderName: 'Smart Dev', receiverName: 'Piglet', message: 'How are you', createDate: new Date('6/22/2022 15:30:50')},
-            {sender: '1', receiver: '7', senderName: 'Smart Dev', receiverName: 'Piglet', message: 'I mean that prevent to login from more than two computer at once', createDate: new Date('6/22/2022 15:30:50')},
-            {sender: '7', receiver: '1', senderName: 'Piglet', receiverName: 'Smart Dev', message: 'Hi', createDate: new Date('6/22/2022 15:31:50')},
-            {sender: '1', receiver: '7', senderName: 'Smart Dev', receiverName: 'Piglet', message: 'Hi', createDate: new Date('6/22/2022 15:31:50')},]
-        },
-        {
-            id: '2',
-            username: 'Black Jack',
-            message: 'How are you',
-            writeDate: '6/11/2022',
-            messages: [{sender: '7', receiver: '2', senderName: 'Piglet', receiverName: 'Black Jack', message: 'Hi', createDate: new Date('6/22/2022 15:20:50')},
-            {sender: '2', receiver: '7', senderName: 'Black Jack', receiverName: 'Piglet', message: 'How are you', createDate: new Date('6/22/2022 15:31:50')},]
-        },
-        {
-            id: '3',
-            username: 'Harry Poto',
-            message: 'AASDODKFWP',
-            writeDate: '6/11/2022',
-            messages: [{sender: '7', senderName: 'Piglet', receiverName: 'Harry Poto', receiver: '3', message: 'AASDODKFWP', createDate: new Date('6/22/2022 15:20:50')},]
-        },
-        {
-            id: '4',
-            username: 'Steve L',
-            message: 'Are you there?',
-            writeDate: '6/11/2022',
-            messages: [{sender: '7', senderName: 'Piglet', receiverName: 'Steve L', receiver: '1', message: 'Hi', createDate: new Date('6/22/2022 15:20:50')},
-            {sender: '4', receiver: '7', senderName: 'Steve L', receiverName: 'Piglet', message: 'Are you there?', createDate: new Date('6/22/2022 15:31:50')},]
-        },
-        {
-            id: '5',
-            username: 'Wolf Han',
-            message: 'Hello',
-            writeDate: '6/11/2022',
-            messages: [{sender: '7', senderName: 'Piglet', receiverName: 'Wolf Han', receiver: '1', message: 'Hi', createDate: new Date('6/22/2022 15:20:50')},
-            {sender: '5', receiver: '7', senderName: 'Wolf Han', receiverName: 'Piglet', message: 'Hello', createDate: new Date('6/22/2022 15:31:50')},]
-        },
-        {
-            id: '6',
-            username: 'Worker Fa',
-            message: 'Hi',
-            writeDate: '6/11/2022',
-            messages: [{sender: '7', senderName: 'Piglet', receiverName: 'Worker Fa', receiver: '1', message: 'Hi', createDate: new Date('6/22/2022 15:20:50')},
-            {sender: '6', receiver: '7', senderName: 'Worker Fa', receiverName: 'Piglet', message: 'Hi', createDate: new Date('6/22/2022 15:31:50')},]
-        }
-    ];
-
+    const friends = friendContext.list;
     const friendItems = friends.map((friend, index) => {
+        const selectedFriend = friendContext.selectedIndex != -1 ? friendContext.list[friendContext.selectedIndex] : null;
         return(
             <ListItem
                 key={index}
                 button
                 onClick={onClickFriend(friend)}
-                sx = {selectFriendContext.user && friend.id == selectFriendContext.user.id ? {
+                sx = {selectedFriend && friend._id == selectedFriend._id ? {
                     bgcolor: 'rgba(0,0,0,0.08)'
                 } : {}}
             >                
@@ -177,17 +121,17 @@ const FriendList = (props: any) => {
                         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                         variant="dot"
                     >
-                        <Avatar {...stringAvatar(friend.username)} />
+                        <Avatar {...stringAvatar(friend.firstname.toUpperCase() + ' ' + friend.lastname.toUpperCase())} />
                     </StyledBadge>
                 </ListItemAvatar>
                 <ListItemText
-                    primary={friend.username}
-                    secondary={friend.message}
+                    primary={friend.firstname + ' ' + friend.lastname}
+                    // secondary={friend.message}
                     primaryTypographyProps={{overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'pre', fontSize: '0.9rem', width: '86%'}}
                     secondaryTypographyProps={{overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'pre', fontSize: '0.75rem'}} />
                 <ListItemSecondaryAction sx={{top: '40%'}}>
                     <Typography variant="overline" sx={{color: 'rgba(0, 0, 0, 0.6)'}}>
-                        {friend.writeDate}
+                        {/* {friend.writeDate} */}
                     </Typography>
                 </ListItemSecondaryAction>
             </ListItem>

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router'
-import {AuthContext} from '../contexts/AuthContext';
+import AuthContext from '../contexts/AuthContext';
 
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';

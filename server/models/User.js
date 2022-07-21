@@ -6,13 +6,14 @@ const userSchema = new mongoose.Schema({
   lastname: { type: String, default: null },
   email: { type: String, unique: true },
   password: { type: String },
-  token: { type: String },
+  cstatus: { type: String, enum: ['ACTIVE', 'AWAY', 'OFFLINE'], default: 'OFFLINE' },
 });
 
 userSchema.pre(
 	'save',
 	async function(next) {
 		const user = this;
+		if ( !user.isModified('password') ) return next();
 		const hash = await bcrypt.hash(this.password, 10);
 
 		this.password = hash;

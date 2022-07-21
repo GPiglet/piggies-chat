@@ -9,7 +9,8 @@ import IconButton from '@mui/material/IconButton';
 import ChatHistory from '../ChatHistory';
 import FriendHeader from '../Header/FriendHeader';
 import SendIcon from '@mui/icons-material/Send';
-import { SelectFriendContext } from '../../contexts/FriendContext';
+import FriendContext from '../../contexts/FriendContext';
+import AuthContext from '../../contexts/AuthContext';
 
 const InputMessageField = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -35,7 +36,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const ChatContent = React.forwardRef((props: any, ref) => {
-    const selectFriendContext = React.useContext(SelectFriendContext);
+    const friendContext = React.useContext(FriendContext);
+    const authContext = React.useContext(AuthContext);
+    const user = authContext.user;
 
     return (
         <Box ref={ref}
@@ -45,7 +48,7 @@ const ChatContent = React.forwardRef((props: any, ref) => {
             }}
         >
             
-            {selectFriendContext.user && <>
+            {friendContext.selectedIndex != -1 && <>
             <FriendHeader refLeftSide={props.refLeftSide} refChatContent={ref} />
             <Divider />
             <ChatHistory />
@@ -66,7 +69,7 @@ const ChatContent = React.forwardRef((props: any, ref) => {
                 </IconButton>
             </Stack>
             </>}
-            {!selectFriendContext.user &&
+            {friendContext.selectedIndex == -1 &&
                 <Box
                     sx={{
                         height: '100%',
@@ -76,7 +79,7 @@ const ChatContent = React.forwardRef((props: any, ref) => {
                     }}
                 >
                     <Typography variant="h2" align="center">
-                        Welcome Piglet!
+                        Welcome {user?.firstname + ' ' + user?.lastname}!
                     </Typography>
                 </Box>
             }

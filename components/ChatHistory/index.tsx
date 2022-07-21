@@ -8,7 +8,7 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Scrollbars from 'react-custom-scrollbars-2';
 import Box from '@mui/material/Box';
-import { MessageContext } from '../../contexts/MessageContext';
+import MessageContext from '../../contexts/MessageContext';
 
 const stringToColor = (string: string) => {
     let hash = 0;

@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import {AuthContext} from '../../contexts/AuthContext';
+import AuthContext from '../../contexts/AuthContext';
 
 import { styled } from '@mui/material/styles';
 import Badge from '@mui/material/Badge';

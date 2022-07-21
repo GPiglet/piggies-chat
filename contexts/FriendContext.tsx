@@ -1,12 +1,21 @@
 import {createContext} from 'react';
+import {UserType} from './Types'
 
-type SelectFriendContextType = {
-    user: any,
-    selectFriend: (user: any) => void;
+type FriendContextType = {
+    list: Array<UserType>
+    selectedIndex: number,
+    selectFriend: (user: any) => void,
+    push: (friends: Array<UserType>, isReset: boolean) => void,
+    splice: (friend: UserType) => void,
+
 };
 
-const SelectFriendContextDefaultValues: SelectFriendContextType = {
-    user: null,
+const FriendContextDefaultValues: FriendContextType = {
+    list: [],
+    selectedIndex: -1,
     selectFriend: (user: any) => {},
+    push: (friends: Array<UserType>, isReset: boolean) => {},
+    splice: (friend: UserType) => {}
 }
-export const SelectFriendContext = createContext<SelectFriendContextType>(SelectFriendContextDefaultValues);
+const FriendContext = createContext<FriendContextType>(FriendContextDefaultValues);
+export default FriendContext;

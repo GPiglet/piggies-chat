@@ -1,10 +1,5 @@
 import {createContext} from 'react';
-export type UserType = {
-    firstname: string,
-    lastname: string,
-    email: string,
-    password: string
-}
+import {UserType} from './Types';
 type AuthContextType = {
     user: UserType | null,
     signup: (user: UserType, subscriber: any, onError: any) => void,
@@ -20,4 +15,5 @@ const AuthContextDefaultValues: AuthContextType = {
     logout: () => {},
     setUser: (user: UserType) => {}
 }
-export const AuthContext = createContext<AuthContextType>(AuthContextDefaultValues);
+const AuthContext = createContext<AuthContextType>(AuthContextDefaultValues);
+export default AuthContext;
